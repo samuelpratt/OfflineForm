@@ -9,13 +9,26 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/js/site.min.js",
+    "outputFileName": "wwwroot/sw.js",
     "inputFiles": [
-      "wwwroot/js/site.js"
+      "wwwroot/sw/sw.js"
     ],
     // Optionally specify minification options
     "minify": {
-      "enabled": true,
+      "enabled": false,
+      "renameLocals": false
+    },
+    // Optionally generate .map file
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/form.js",
+    "inputFiles": [
+      "wwwroot/js/form.js" 
+    ],
+    // Optionally specify minification options
+    "minify": {
+      "enabled": false,
       "renameLocals": true
     },
     // Optionally generate .map file

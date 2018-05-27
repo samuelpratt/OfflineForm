@@ -1,97 +1,36 @@
 <html>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js').then(function(registration) {
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="form.js"></script>
+<script type="text/javascript">
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('/sw.js').then(function (registration) {
                 // Registration was successful
                 console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            }, function(err) {
+            }, function (err) {
                 // registration failed :(
                 console.log('ServiceWorker registration failed: ', err);
             });
         });
     }
-    </script>
-    <script type="text/javascript">
-        var storageWorks = false;
-        function checkStorage()
-        {
-            if (typeof(Storage) !== "undefined") {
-                storageWorks = true;
-            } else {
-                alert("This browser doens't support local storage. offline submit won't work!")
-                storageWorks = false;
-            }
-        }
+</script>
 
-        function saveAndSubmit()
-        {    
-            if(messageText == "")
-            {
-                alert("enter some text!");
-                return;
-            }
-            if(storageWorks)
-            {           
-                //Save the text to local storage and send a sync event to the service worker
-                if(localStorage.getItem(messageKey) == null)
-                {
-                    localStorage.setItem(messageKey, JSON.stringify([]));
-                }
+<head>
+    <title>This is a form</title>
+</head>
 
-                //add the message to local storage
-                var messageText = document.getElementById("messageText").value;
-                var messageKey = "messages";
-                var messageList = JSON.parse(localStorage.getItem(messageKey));
-                messageList.push(messageText);
-                localStorage.setItem(messageKey, JSON.stringify(messageList));
+<body>
+    <form>
+        <div>
+            <label>Your message:</label>
+        </div>
+        <div>
+            <textarea name="message" id="messageText" cols="30" rows="10"></textarea>
+        </div>
+        <div>
+            <input type="button" name="submit" value="submit" onclick="saveAndSubmit()">
+        </div>
+    </form>
+</body>
 
-                //request the sync
-                navigator.serviceWorker.ready.then(function(swRegistration) {
-                    return swRegistration.sync.register('myFirstSync');
-                });
-            }
-            else
-            {
-                //Fall back to ajax send
-                var messageText = document.getElementById("messageText").value;
-                var messageJson = { "messageText" : messageText };
-                $.ajax({
-                    url: '/api/Post',
-                    type: 'post',
-                    dataType: 'json',
-                    contentType: "application/json; charset=utf-8",
-                    traditional: true,
-                    data: JSON.stringify(messageJson),
-                    success: function (data) {
-                        alert("Message Sent!");
-                    },
-                    fail: function () {
-                        alert("Message send failed!");
-                    },
-                    
-                });
-            }
-
-        }
-    </script>
-    <head>
-        <title>This is a form</title>
-    </head>
-    <body onload="checkStorage()">
-        <form onsubmit="saveAndSubmit()">
-            <div>
-                <label>Your message:</label>
-            </div>
-            <div>
-                <textarea name="message" id="messageText" cols="30" rows="10"></textarea>
-            </div>
-            <div>
-                    <input type="button" name="submit" value="submit" onclick="saveAndSubmit()">
-            </div>
-        </form>
-    </body>
 </html>
-
-

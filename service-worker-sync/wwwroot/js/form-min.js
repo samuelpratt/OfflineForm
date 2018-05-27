@@ -14,7 +14,6 @@ self.addEventListener('install', function(event) {
   );
 });
 
-/*
 self.addEventListener('fetch', function(event) {
     event.respondWith(
       caches.match(event.request)
@@ -29,19 +28,11 @@ self.addEventListener('fetch', function(event) {
       )
     );
   });
-  */
 
+function sendForm() {
+  console.log("Sending form");
+}
 
 self.addEventListener('sync', function(event) {
-      console.log("got sync");
-      var messageJson = { "messageText" : "foo" };
-      fetch('/api/Post', {
-        method: 'POST',
-        body: JSON.stringify(messageJson),
-        headers: {
-          'Accept': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-          'Content-Type': 'application/json'
-        }
-      });
+  console.log("Service worker called");
 });
