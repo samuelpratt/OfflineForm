@@ -1,8 +1,5 @@
 var CACHE_NAME = 'my-site-cache-v1';
 var urlsToCache = [
-  '/index.html',
-  '/page1.html',
-  '/page2.html',
   '/form.html',
 ];
 
@@ -17,6 +14,7 @@ self.addEventListener('install', function(event) {
   );
 });
 
+/*
 self.addEventListener('fetch', function(event) {
     event.respondWith(
       caches.match(event.request)
@@ -31,3 +29,14 @@ self.addEventListener('fetch', function(event) {
       )
     );
   });
+*/
+
+function sendForm() {
+  console.log("Sending form");
+}
+
+self.addEventListener('sync', function(event) {
+  if (event.tag == 'myFirstSync') {
+    event.waitUntil(sendForm());
+  }
+});
