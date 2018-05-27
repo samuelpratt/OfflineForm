@@ -13,15 +13,12 @@
         }
 
         function saveAndSubmit()
-        {
-            var messageKey = "messages";
-            var messageText = document.getElementById("messageText").value;
-            
-                if(messageText == "")
-                {
-                    alert("enter some text!");
-                    return;
-                }
+        {    
+            if(messageText == "")
+            {
+                alert("enter some text!");
+                return;
+            }
             if(storageWorks)
             {           
                 //Save the text to local storage and send a sync event to the service worker
@@ -30,13 +27,22 @@
                     localStorage.setItem(messageKey, JSON.stringify([]));
                 }
 
+                //add the message to local storage
+                var messageText = document.getElementById("messageText").value;
+                var messageKey = "messages";
                 var messageList = JSON.parse(localStorage.getItem(messageKey));
                 messageList.push(messageText);
                 localStorage.setItem(messageKey, JSON.stringify(messageList));
+
+                //request the sync
+                navigator.serviceWorker.ready.then(function(swRegistration) {
+                    return swRegistration.sync.register('myFirstSync');
+                });
             }
             else
             {
                 //Fall back to ajax send
+                var messageText = document.getElementById("messageText").value;
                 var messageJson = { "messageText" : messageText };
                 $.ajax({
                     url: '/api/Post',
