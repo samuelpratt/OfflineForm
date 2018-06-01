@@ -3,6 +3,8 @@
 This is a PoC of a offline send using a service worker. If you turn off your network connection and push send in /form.html
 then the contents of the form will be sent to /api/Post next time the network is up.
 
+Note: data is stored in indexeddb as you can't access localstorage from the service worker.
+
 # References
 
 * https://www.twilio.com/blog/2017/02/send-messages-when-youre-back-online-with-service-workers-and-background-sync.html
