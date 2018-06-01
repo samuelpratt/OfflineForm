@@ -1,6 +1,6 @@
 # Offline Form Submission
 
-This is an example of a offline send using a service worker. If you turn off your network connection and push send in /form.html
+This is a PoC of a offline send using a service worker. If you turn off your network connection and push send in /form.html
 then the contents of the form will be sent to /api/Post next time the network is up.
 
 # References
