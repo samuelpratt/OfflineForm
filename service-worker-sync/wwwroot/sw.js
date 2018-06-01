@@ -52,30 +52,6 @@ var store = {
   }
 };
 
-/*
-function deleteMessageIfSuccess(data) {
-  if (data.result === 'success') {
-    return store.outbox('readwrite').then(function(outbox) {
-      return outbox.delete(message.id);
-    });
-  }
-}
-
-function sendMessage(message) {
-  return fetch('/messages', {
-    method: 'POST',
-    body: JSON.stringify(message),
-    headers: {
-      'Accept': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest',
-      'Content-Type': 'application/json'
-    }
-  });
-}
-*/
-
-  
-
 self.addEventListener('sync', function(event) {
   console.log("Got Sync");
   
@@ -97,9 +73,11 @@ self.addEventListener('sync', function(event) {
           }
         }).then(function(response) {
           console.log("MessageSent");
-          return response.json();
+          return response;
         }).then(function(data) {
-          if (data.result === 'success') {
+          console.log("result of post was " + JSON.stringify(data));
+          console.log("status is " + data.status);
+          if (data.status == 200) {
             console.log("Deleting Message");
             return store.outbox('readwrite').then(function(outbox) {
               return outbox.delete(message.id);
